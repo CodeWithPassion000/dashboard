@@ -1,5 +1,6 @@
 // import { deleteUser } from "@/app/lib/actions";
 // import { fetchUsers } from "@/app/lib/data";
+import { fetchUsers } from '@/lib/data';
 import Pagination from '@/components/ui/dashboard/pagination/pagination';
 import Search from '@/components/ui/dashboard/search/search';
 import styles from '@/components/ui/dashboard/users/users.module.css';
@@ -9,7 +10,9 @@ import Link from 'next/link';
 const UsersPage = async () => {
   // const q = searchParams?.q || "";
   // const page = searchParams?.page || 1;
-  // const { count, users } = await fetchUsers(q, page);
+
+  const users = await fetchUsers();
+  console.log(users);
 
   return (
     <div className={styles.container}>
@@ -50,7 +53,7 @@ const UsersPage = async () => {
             <td>Active</td>
             <td>
               <div className={styles.buttons}>
-                <Link href="/">
+                <Link href="/dashboard/users/test">
                   <button className={`${styles.button} ${styles.view}`}>
                     View
                   </button>
