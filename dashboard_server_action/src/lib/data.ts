@@ -1,16 +1,41 @@
 import { Product, User } from "./models";
 import { connectToDB } from "./utils";
 
+export const fetchUsers = async (q: any, page: any) => {
+  const regex = new RegExp(q, "i");
 
-export const fetchUsers = async () => {
+  const ITEM_PER_PAGE = 2;
+
   try {
     connectToDB();
-    const users = User.find()
-    return users
-
-  } catch (error) {
-    console.log(error);
-    throw new Error('Failed to fetch users!')
+    const count = await User.find({ username: { $regex: regex } }).countDocuments(); // Use countDocuments() instead of count()
+    const users = await User.find({ username: { $regex: regex } })
+      .limit(ITEM_PER_PAGE)
+      .skip(ITEM_PER_PAGE * (page - 1));
+    return { count, users };
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to fetch users!");
   }
-}
+};
 
+
+
+export const fetchProducts = async (q:any, page:any) => {
+  console.log(q);
+  const regex = new RegExp(q, "i");
+
+  const ITEM_PER_PAGE = 2;
+
+  try {
+    connectToDB();
+    const count = await Product.find({ title: { $regex: regex } }).countDocuments();
+    const products = await Product.find({ title: { $regex: regex } })
+      .limit(ITEM_PER_PAGE)
+      .skip(ITEM_PER_PAGE * (page - 1));
+    return { count, products };
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to fetch products!");
+  }
+};

@@ -28,13 +28,8 @@ const userSchema = new mongoose.Schema(
     isActive: {
       type: Boolean,
       default: true,
-    },
-    phone: {
-      type: String,
-    },
-    address: {
-      type: String,
-    },
+    }
+    
   },
   { timestamps: true }
 );
@@ -74,5 +69,6 @@ const productSchema = new mongoose.Schema(
 );
 
 export const User = mongoose.models.User || mongoose.model('User', userSchema);
+
 export const Product =
   mongoose.models.Product || mongoose.model('Product', productSchema);

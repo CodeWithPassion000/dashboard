@@ -3,13 +3,13 @@ import Link from 'next/link';
 import styles from '@/components/ui/dashboard/products/products.module.css';
 import Search from '@/components/ui/dashboard/search/search';
 import Pagination from '@/components/ui/dashboard/pagination/pagination';
-// import { fetchProducts } from "@/app/lib/data";
 // import { deleteProduct } from "@/app/lib/actions";
+import { fetchProducts } from '@/lib/data';
 
-const ProductsPage = async () => {
-  // const q = searchParams?.q || "";
-  // const page = searchParams?.page || 1;
-  // const { count, products } = await fetchProducts(q, page);
+const ProductsPage = async ({searchParams}:any) => {
+  const q = searchParams?.q || "";
+  const page = searchParams?.page || 1;
+  const { count, products } = await fetchProducts(q, page);
 
   return (
     <div className={styles.container}>
@@ -31,39 +31,7 @@ const ProductsPage = async () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <div className={styles.product}>
-                <Image
-                  src="/noproduct.jpg"
-                  alt=""
-                  width={40}
-                  height={40}
-                  className={styles.productImage}
-                />
-                Product one
-              </div>
-            </td>
-            <td>This product belongs to men's cloth</td>
-            <td>$80</td>
-            <td>02-04-23</td>
-            <td>10</td>
-            <td>
-              <div className={styles.buttons}>
-                <Link href="/dashboard/products/test">
-                  <button className={`${styles.button} ${styles.view}`}>
-                    View
-                  </button>
-                </Link>
-
-                <button className={`${styles.button} ${styles.delete}`}>
-                  Delete
-                </button>
-              </div>
-            </td>
-          </tr>
-
-          {/* {products.map((product) => (
+        {products.map((product) => (
             <tr key={product.id}>
               <td>
                 <div className={styles.product}>
@@ -88,7 +56,7 @@ const ProductsPage = async () => {
                       View
                     </button>
                   </Link>
-                  <form action={deleteProduct}>
+                  <form >
                     <input type="hidden" name="id" value={product.id} />
                     <button className={`${styles.button} ${styles.delete}`}>
                       Delete
@@ -97,10 +65,12 @@ const ProductsPage = async () => {
                 </div>
               </td>
             </tr>
-          ))} */}
+          ))} 
+
+         
         </tbody>
       </table>
-      {/* <Pagination count={count} /> */}
+      <Pagination count={count} />
     </div>
   );
 };

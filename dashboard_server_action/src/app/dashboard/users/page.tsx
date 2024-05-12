@@ -1,5 +1,4 @@
 // import { deleteUser } from "@/app/lib/actions";
-// import { fetchUsers } from "@/app/lib/data";
 import { fetchUsers } from '@/lib/data';
 import Pagination from '@/components/ui/dashboard/pagination/pagination';
 import Search from '@/components/ui/dashboard/search/search';
@@ -7,12 +6,10 @@ import styles from '@/components/ui/dashboard/users/users.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const UsersPage = async () => {
-  // const q = searchParams?.q || "";
-  // const page = searchParams?.page || 1;
-
-  const users = await fetchUsers();
-  console.log(users);
+const UsersPage = async ({searchParams}:any) => {
+  const q = searchParams?.q || "";
+  const page = searchParams?.page || 1;
+  const { count, users } = await fetchUsers(q, page);
 
   return (
     <div className={styles.container}>
@@ -34,39 +31,7 @@ const UsersPage = async () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <div className={styles.user}>
-                <Image
-                  src="/noavatar.png"
-                  alt=""
-                  width={40}
-                  height={40}
-                  className={styles.userImage}
-                />
-                Shiva kumar
-              </div>
-            </td>
-            <td>shiva@gmail.com</td>
-            <td>13.01.2022</td>
-            <td>Admin</td>
-            <td>Active</td>
-            <td>
-              <div className={styles.buttons}>
-                <Link href="/dashboard/users/test">
-                  <button className={`${styles.button} ${styles.view}`}>
-                    View
-                  </button>
-                </Link>
-
-                <button className={`${styles.button} ${styles.delete}`}>
-                  Delete
-                </button>
-              </div>
-            </td>
-          </tr>
-
-          {/* {users.map((user) => (
+        {users.map((user) => (
             <tr key={user.id}>
               <td>
                 <div className={styles.user}>
@@ -91,7 +56,7 @@ const UsersPage = async () => {
                       View
                     </button>
                   </Link>
-                  <form action={deleteUser}>
+                  <form>
                     <input type="hidden" name="id" value={(user.id)} />
                     <button className={`${styles.button} ${styles.delete}`}>
                       Delete
@@ -100,10 +65,12 @@ const UsersPage = async () => {
                 </div>
               </td>
             </tr>
-          ))} */}
+          ))} 
+
+          
         </tbody>
       </table>
-      {/* <Pagination count={count} /> */}
+      <Pagination count={count} />
     </div>
   );
 };
